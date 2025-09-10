@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transformación Digital Disney</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            background: linear-gradient(135deg, #1f5582, #4a90e2);
+            color: #333;
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        .presentation {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            padding: 60px;
+            text-align: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: white;
+            box-shadow: 0 0 50px rgba(0,0,0,0.3);
+        }
+        
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Slide específico para título */
+        .slide.title-slide {
+            background: linear-gradient(135deg, #1f5582, #4a90e2);
+            color: white;
+        }
+        
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        h2 {
+            font-size: 2.5em;
+            color: #1f5582;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+        
+        h3 {
+            font-size: 2em;
+            color: #ffc72c;
+            margin-bottom: 20px;
+        }
+        
+        h4 {
+            font-size: 1.5em;
+            color: #1f5582;
+            margin: 15px 0;
+        }
+        
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin: 15px 0;
+        }
+        
+        .subtitle {
+            font-size: 1.8em;
+            color: #ffc72c;
+            margin-bottom: 15px;
+        }
+        
+        .description {
+            font-size: 1.3em;
+            margin-bottom: 40px;
+        }
+        
+        .icons {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 50px;
+        }
+        
+        .icon {
+            font-size: 4em;
+        }
+        
+        .metric-box {
+            background: linear-gradient(135deg, #1f5582, #4a90e2);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px;
+            display: inline-block;
+            min-width: 250px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .metric-number {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .highlight-box {
+            background: #f8f9fa;
+            border-left: 8px solid #1f5582;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .highlight-box h3 {
+            color: #ffc72c;
+            margin-bottom: 15px;
+        }
+        
+        .assets-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin: 40px 0;
+            max-width: 800px;
+        }
+        
+        .asset-item {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin: 40px 0;
+            max-width: 1000px;
+        }
+        
+        .tech-grid {
+            display: flex;
+            justify-content: space-around;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+        
+        .tech-item {
+            text-align: center;
+            margin: 20px;
+            max-width: 250px;
+        }
+        
+        .metrics-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+            max-width: 800px;
+            text-align: left;
+        }
+        
+        .achievement-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #ffc72c;
+        }
+        
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+        
+        .nav-btn {
+            background: #1f5582;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 30px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .nav-btn:hover {
+            background: #4a90e2;
+            transform: translateY(-2px);
+        }
+        
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(31, 85, 130, 0.9);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1em;
+            z-index: 1000;
+        }
+        
+        ul {
+            text-align: left;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        li {
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+        
+        .emphasis {
+            color: #1f5582;
+            font-weight: bold;
+            font-style: italic;
+            font-size: 1.4em;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .slide {
+                padding: 30px 20px;
+            }
+            
+            h1 { font-size: 2.5em; }
+            h2 { font-size: 2em; }
+            h3 { font-size: 1.5em; }
+            
+            .assets-grid,
+            .strategy-grid,
+            .achievements-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tech-grid,
+            .metrics-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <div class="slide-counter">
+            <span id="current-slide">1</span> / 5
+        </div>
+        
+        <!-- Slide 1: Título -->
+        <div class="slide title-slide active">
+            <h1>Transformación Digital en Disney</h1>
+            <div class="subtitle">Post-Adquisición de 21st Century Fox</div>
+            <p class="description">Análisis del proceso de transformación digital más importante del sector entretenimiento</p>
+            <div class="icons">
+                <span class="icon">🏰</span>
+                <span class="icon">📱</span>
+                <span class="icon">🎬</span>
+            </div>
+        </div>
+
+        <!-- Slide 2: Contexto de la Adquisición -->
+        <div class="slide">
+            <h2>Contexto: La Gran Adquisición</h2>
+            <div class="highlight-box">
+                <h3>$71.3 mil millones</h3>
+                <p>Adquisición de activos clave de 21st Century Fox (2019)</p>
+            </div>
+            
+            <div class="assets-grid">
+                <div class="asset-item">
+                    <div class="icon">🎭</div>
+                    <h4>20th Century Fox Studios</h4>
+                </div>
+                <div class="asset-item">
+                    <div class="icon">📺</div>
+                    <h4>FX Networks</h4>
+                </div>
+                <div class="asset-item">
+                    <div class="icon">🌍</div>
+                    <h4>National Geographic</h4>
+                </div>
+                <div class="asset-item">
+                    <div class="icon">🎮</div>
+                    <h4>Control total de Hulu</h4>
+                </div>
+            </div>
+
+            <p class="emphasis">
+                <strong>Objetivo:</strong> Consolidar contenido premium para competir en la era del streaming
+            </p>
+        </div>
+
+        <!-- Slide 3: Estrategia de Transformación Digital -->
+        <div class="slide">
+            <h2>Estrategia de Transformación Digital</h2>
+            
+            <div class="strategy-grid">
+                <div class="highlight-box">
+                    <h4>🎯 Direct-to-Consumer</h4>
+                    <ul>
+                        <li>Disney+</li>
+                        <li>ESPN+</li>
+                        <li>Hulu (control total)</li>
+                    </ul>
+                </div>
+                
+                <div class="highlight-box">
+                    <h4>🔄 Integración de Plataformas</h4>
+                    <ul>
+                        <li>Unificación de sistemas</li>
+                        <li>Experiencia cohesiva</li>
+                        <li>Cross-platform synergy</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="metric-box">
+                <div class="icon">🤖</div>
+                <h4>Data Analytics & AI</h4>
+                <p>Personalización de contenido • Optimización de recomendaciones</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Implementación Tecnológica e IA -->
+        <div class="slide">
+            <h2>Implementación Tecnológica e IA</h2>
+            
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <div class="icon">☁️</div>
+                    <h4>AWS Partnership</h4>
+                    <p>Escalabilidad global<br>CDN optimizado</p>
+                </div>
+                
+                <div class="tech-item">
+                    <div class="icon">🧠</div>
+                    <h4>BAMTech Platform</h4>
+                    <p>Analytics avanzado<br>Machine Learning</p>
+                </div>
+                
+                <div class="tech-item">
+                    <div class="icon">🔒</div>
+                    <h4>Security Framework</h4>
+                    <p>Protección IP premium<br>DRM avanzado</p>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h4>🚀 Sistemas Integrados</h4>
+                <p>CRM Unificado • Content Management • Analytics Platform</p>
+            </div>
+        </div>
+
+        <!-- Slide 5: Resultados Financieros y Métricas -->
+        <div class="slide">
+            <h2>Resultados Extraordinarios</h2>
+            
+            <div class="metrics-container">
+                <div class="metric-box">
+                    <div class="metric-number">150M+</div>
+                    <div>Suscriptores Disney+</div>
+                    <small>(2023)</small>
+                </div>
+                
+                <div class="metric-box">
+                    <div class="metric-number">45M+</div>
+                    <div>Suscriptores Hulu</div>
+                    <small>(Control total)</small>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>🏆 Logros Clave</h3>
+                <div class="achievements-grid">
+                    <div class="achievement-item">
+                        <strong>✅ Crecimiento más rápido que Netflix</strong><br>
+                        <small>En sus primeros años de operación</small>
+                    </div>
+                    <div class="achievement-item">
+                        <strong>✅ Transformación B2B2C → B2C</strong><br>
+                        <small>Relación directa con consumidores</small>
+                    </div>
+                    <div class="achievement-item">
+                        <strong>✅ Diversificación de ingresos</strong><br>
+                        <small>Multiple revenue streams</small>
+                    </div>
+                    <div class="achievement-item">
+                        <strong>✅ Expansión internacional</strong><br>
+                        <small>Presencia global acelerada</small>
+                    </div>
+                </div>
+            </div>
+
+            <p class="emphasis">
+                <strong>"La velocidad de implementación definió el éxito"</strong>
+            </p>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prev-btn" onclick="previousSlide()">← Anterior</button>
+        <button class="nav-btn" id="next-btn" onclick="nextSlide()">Siguiente →</button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 5;
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            const counter = document.getElementById('current-slide');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            if (n > totalSlides) currentSlide = 1;
+            if (n < 1) currentSlide = totalSlides;
+            
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[currentSlide - 1].classList.add('active');
+            
+            counter.textContent = currentSlide;
+            
+            prevBtn.disabled = currentSlide === 1;
+            nextBtn.disabled = currentSlide === totalSlides;
+        }
+
+        function nextSlide() {
+            currentSlide++;
+            showSlide(currentSlide);
+        }
+
+        function previousSlide() {
+            currentSlide--;
+            showSlide(currentSlide);
+        }
+
+        // Navegación con teclado
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+            if (e.key === 'Home') {
+                currentSlide = 1;
+                showSlide(currentSlide);
+            }
+            if (e.key === 'End') {
+                currentSlide = totalSlides;
+                showSlide(currentSlide);
+            }
+        });
+
+        // Inicializar
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>
